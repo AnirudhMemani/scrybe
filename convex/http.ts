@@ -9,9 +9,9 @@ const http = httpRouter()
 const cors = corsRouter(http, {
     allowedOrigins: [
         "http://localhost:3000",
-        "https://scrybe.vercel.app",
-        "https://scrybe.chat",
-        "https://www.scrybe.chat"
+        "https://scrybe-six.vercel.app",
+        "https://scrybe-six.chat",
+        "https://www.scrybe-six.chat"
     ],
     allowedHeaders: ["Content-Type", "Authorization"],
     allowCredentials: true
