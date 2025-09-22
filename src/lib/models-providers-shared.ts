@@ -126,8 +126,11 @@ export function useAvailableModels(userSettings: Infer<typeof UserSettings> | un
     const availableModels: DisplayModel[] = []
     const unavailableModels: DisplayModel[] = []
 
-    // Add shared models
+    // Add shared models (Gemini-only)
     MODELS_SHARED.forEach((model) => {
+        // Only surface Gemini models in the UI
+        if (!model.id.startsWith("gemini-")) return
+
         const hasProvider = model.adapters.some((adapter) => {
             const providerId = adapter.split(":")[0]
             if (providerId.startsWith("i3-")) return true
@@ -142,9 +145,12 @@ export function useAvailableModels(userSettings: Infer<typeof UserSettings> | un
         }
     })
 
-    // Add custom models
+    // Add custom models (restrict to Google/Gemini)
     Object.entries(userSettings?.customModels || {}).forEach(([id, customModel]) => {
         if (!customModel.enabled) return
+        // Only allow custom Gemini models from the Google provider
+        if (customModel.providerId !== "google") return
+        if (!customModel.modelId.startsWith("gemini-")) return
 
         const hasProvider =
             currentProviders.core[customModel.providerId]?.enabled ||

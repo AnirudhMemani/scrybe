@@ -39,7 +39,14 @@ const ChatContent = ({ threadId: routeThreadId, folderId }: ChatProps) => {
     useDynamicTitle({ threadId })
 
     useMemo(() => {
-        if (!selectedModel && MODELS_SHARED.length > 0) {
+        if (selectedModel) return
+        // Prefer a Gemini model by default
+        const firstGemini = MODELS_SHARED.find((m) => m.id.startsWith("gemini-"))
+        if (firstGemini) {
+            setSelectedModel(firstGemini.id)
+            return
+        }
+        if (MODELS_SHARED.length > 0) {
             setSelectedModel(MODELS_SHARED[0].id)
         }
     }, [selectedModel, setSelectedModel])
