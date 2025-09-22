@@ -87,15 +87,43 @@ export const getUserRegistryInternal = internalQuery({
             }
         }
 
+        // const models: Record<string, SharedModel & { customProviderId?: string }> = {}
+        // for (const model of MODELS_SHARED) {
+        //     const available_adapters: RegistryKey[] = []
+        //     for (const adapter of model.adapters) {
+        //         const provider = adapter.split(":")[0]
+        //         if (provider in providers || provider.startsWith("i3-")) {
+        //             available_adapters.push(adapter)
+        //         }
+        //     }
+        //     models[model.id] = {
+        //         id: model.id,
+        //         name: model.name,
+        //         adapters: available_adapters,
+        //         abilities: model.abilities,
+        //         mode: model.mode,
+        //         supportedImageSizes: model.supportedImageSizes
+        //     }
+        // }
+
         const models: Record<string, SharedModel & { customProviderId?: string }> = {}
         for (const model of MODELS_SHARED) {
+            // Only include Gemini models
+            if (!model.id.startsWith("gemini-")) continue
+
             const available_adapters: RegistryKey[] = []
             for (const adapter of model.adapters) {
                 const provider = adapter.split(":")[0]
-                if (provider in providers || provider.startsWith("i3-")) {
+                const baseProvider = provider.startsWith("i3-") ? provider.slice(3) : provider
+
+                // Allow only Google adapters (BYOK google or internal i3-google)
+                if (baseProvider !== "google") continue
+                if (provider in providers || provider === "i3-google") {
                     available_adapters.push(adapter)
                 }
             }
+            if (available_adapters.length === 0) continue
+
             models[model.id] = {
                 id: model.id,
                 name: model.name,
