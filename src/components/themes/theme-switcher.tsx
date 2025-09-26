@@ -84,9 +84,9 @@ function ThemeButton({ theme, isSelected, onSelect, currentMode }: ThemeButtonPr
                     ))}
                 </div>
             )}
-            {"error" in theme && theme.error && (
+            {/* {"error" in theme && theme.error && (
                 <div className="p-3 pt-2 text-destructive text-xs">Error: {theme.error}</div>
-            )}
+            )} */}
         </button>
     )
 }
