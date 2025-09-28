@@ -1,13 +1,12 @@
-import type { QueryClient } from "@tanstack/react-query"
-import { createRootRouteWithContext } from "@tanstack/react-router"
-import { HeadContent, Outlet, Scripts } from "@tanstack/react-router"
-import type { ReactNode } from "react"
-
 import { ThemeScript } from "@/components/theme-script"
 import { auth } from "@/lib/auth"
 import globals_css from "@/styles/globals.css?url"
+import type { QueryClient } from "@tanstack/react-query"
+import { HeadContent, Outlet, Scripts, createRootRouteWithContext } from "@tanstack/react-router"
 import { createServerFn } from "@tanstack/react-start"
 import { getHeaders } from "@tanstack/react-start/server"
+import { Analytics } from "@vercel/analytics/react"
+import type { ReactNode } from "react"
 import { Providers } from "../providers"
 
 // Configurable site metadata
@@ -150,6 +149,7 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
                 <Providers>{children}</Providers>
 
                 <Scripts />
+                <Analytics />
             </body>
         </html>
     )
